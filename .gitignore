@@ -1,0 +1,10 @@
+*.jpg
+*.png
+*.mp4
+*.crt
+*.csr
+*.key
+node_module
+secret
+ssl
+public/images
