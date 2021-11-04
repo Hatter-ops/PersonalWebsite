@@ -4,7 +4,9 @@
 *.crt
 *.csr
 *.key
-node_module
+node_modules
 secret
 ssl
 public/images
+gencert.bash
+genscripts

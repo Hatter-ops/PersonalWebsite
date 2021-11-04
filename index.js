@@ -11,7 +11,7 @@ const cookieParser = require("cookie-parser")
 
 const privateKey = fs.readFileSync(path.join(__dirname, "/ssl/server.key"), "utf-8");
 const certificate = fs.readFileSync(path.join(__dirname, "/ssl/server.crt"), "utf-8");
-const credits = {key: privateKey, cert: certificate};
+const credits = { key: privateKey, cert: certificate };
 const app = express();
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credits, app);
@@ -63,4 +63,3 @@ httpServer.listen(3000, () => {
 httpsServer.listen(3001, () => {
     console.log(`Server is running on port ${3001}.`);
 });
-
