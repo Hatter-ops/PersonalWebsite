@@ -40,7 +40,7 @@ app.get("/login", (req, res) => {
     res.render("login");
 })
 
-app.post("/poster", auth.adminlogin, (req, res) => {
+app.post("/poster", auth.login, (req, res) => {
     res.redirect("/");
 });
 
@@ -54,6 +54,8 @@ app.get("/secret/:name", auth.authentication, (req, res) => {
     res.sendFile(path.join(__dirname, "secret/" + req.params.name));
     console.log(path.join(__dirname, "secret/" + req.params.name));
 });
+
+app.post("/test/test", auth.login)
 
 
 

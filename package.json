@@ -19,6 +19,8 @@
     "mongodb": "^4.1.4",
     "nodemon": "^2.0.14",
     "pug": "^3.0.2",
-    "serve-index": "^1.9.1"
+    "qrcode": "^1.4.4",
+    "serve-index": "^1.9.1",
+    "uuid": "^8.3.2"
   }
 }
