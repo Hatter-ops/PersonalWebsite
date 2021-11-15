@@ -35,18 +35,27 @@ async function login(req, res) {
     if ((username && passw)) {
         await mongoClient.connect(mongodbUrl, async(err, client) => {
             console.log(passw);
-            console.log(username);
-            const db = client.db("Users")
-            const passwdHash = await db.collection("users").findOne({ "username": username });
-            console.log(passwdHash.hash)
-            const compirePassword = await bcrypt.compareSync(passw, passwdHash.hash);
-            //console.log(compirePassword)
-            if (compirePassword) {
-                res.redirect("/secret/")
-                res.send(dbCollection);
-                console.log(dbCollection);
-            } else {
-                res.redirect("/login")
+            console.log(username.hash);
+            try {
+                const db = client.db("Users")
+                const passwdHash = await db.collection("users").findOne({ "username": username });
+                if (!passwdHash) {
+                    res.sendStatus(403).redirect("/login");
+                }
+                console.log(passwdHash.hash)
+                const compirePassword = await bcrypt.compareSync(passw, passwdHash.hash);
+                //console.log(compirePassword)
+                if (compirePassword) {
+                    const token = jwt.sign({ user: passwdHash.username, admin: passwdHash.admin }, privateKey)
+                    console.log(token)
+                    res.cookie("token", token);
+                    res.redirect("/secret")
+                } else {
+                    res.sendStatus(403).redirect("/login");
+                }
+            } catch (err) {
+                console.log(err)
+                res.redirect("/")
             }
         })
     }
@@ -54,12 +63,12 @@ async function login(req, res) {
 
 function authentication(req, res, next) {
     jwt.verify(req.cookies.token, privateKey, (err, decode) => {
+        console.log(decode.user)
+        console.log(decode.admin)
         if (err) {
             console.log(err);
             res.sendStatus(404);
-        } else if (decode.user === "admin" && decode.admin === true) {
-            next();
-        }
+        } else if (decode.user === "Admin" && decode.admin === true) { next() }
 
     })
 }
